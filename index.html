@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Streams</title>
+    <style>
+        /* Design minimaliste et sombre (plus adapté pour du stream) */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #111827; /* Fond sombre */
+            color: #f9fafb; /* Texte clair */
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        /* Grille responsive pour les espaces d'iframes */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        /* Style des conteneurs */
+        .card {
+            background: #1f2937;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Zone de saisie et bouton */
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px 12px;
+            background-color: #374151;
+            color: white;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+        }
+
+        button {
+            padding: 10px 16px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        /* Style de l'iframe adapté à ton code */
+        iframe {
+            width: 100%;
+            height: 400px; /* Un peu plus grand pour de la vidéo */
+            border: 0;
+            border-radius: 8px;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mon Espace Streams</h1>
+
+    <div class="grid">
+        <!-- Espace 1 -->
+        <div class="card">
+            <div class="controls">
+                <input type="text" id="url1" value="https://dlhd.sc/stream/stream-31.php">
+                <button onclick="updateIframe('iframe1', 'url1')">Mettre à jour</button>
+            </div>
+            <iframe id="iframe1" src="https://dlhd.sc/stream/stream-31.php" allowfullscreen></iframe>
+        </div>
+
+        <!-- Espace 2 -->
+        <div class="card">
+            <div class="controls">
+                <input type="text" id="url2" value="https://dlhd.sc/stream/stream-31.php">
+                <button onclick="updateIframe('iframe2', 'url2')">Mettre à jour</button>
+            </div>
+            <iframe id="iframe2" src="https://dlhd.sc/stream/stream-31.php" allowfullscreen></iframe>
+        </div>
+        
+        <!-- Espace 3 -->
+        <div class="card">
+            <div class="controls">
+                <input type="text" id="url3" value="https://dlhd.sc/stream/stream-31.php">
+                <button onclick="updateIframe('iframe3', 'url3')">Mettre à jour</button>
+            </div>
+            <iframe id="iframe3" src="https://dlhd.sc/stream/stream-31.php" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Le script qui gère la mise à jour si tu changes de lien -->
+    <script>
+        function updateIframe(iframeId, inputId) {
+            const urlValue = document.getElementById(inputId).value.trim();
+            const iframe = document.getElementById(iframeId);
+            
+            if(urlValue) {
+                // Si l'utilisateur oublie le "https://", on l'ajoute pour lui (sauf si c'est un code iframe complet)
+                let finalUrl = urlValue;
+                if (!urlValue.startsWith('http') && !urlValue.startsWith('<iframe')) {
+                    finalUrl = 'https://' + urlValue;
+                }
+                
+                // Petite sécurité si jamais tu colles tout le code <iframe...> dans la barre au lieu de juste le lien
+                if (urlValue.includes('src="')) {
+                    const match = urlValue.match(/src="([^"]+)"/);
+                    if (match && match[1]) {
+                        finalUrl = match[1];
+                    }
+                }
+
+                iframe.src = finalUrl;
+            } else {
+                alert("N'oublie pas de mettre une URL dans le champ !");
+            }
+        }
+    </script>
+</body>
+</html>
